@@ -154,7 +154,7 @@ public class ExtendedMathSolver {
 		char buf;						// Zwischenspeicher fuer ein beliebiges Zeichen
 		
 		int countOperators = 0;	// Zaehlvariable fuer Rechenoperationszeichen
-		int start = 0;	// Startposition einer Zahl
+		int start = 0;			// Startposition einer Zahl
 				
 		// Zaehlen der Rechenoperationen * und /
 		for(int i=1; i<expressionAsChars.length; i++)
@@ -202,8 +202,7 @@ public class ExtendedMathSolver {
 		{
 			b = numbers[i];	// Werte holen
 			
-			// Abfrage der Rechenoperation und durchfuehren
-			// der entsprechenden Berechnung
+			// Abfrage der Rechenoperation und durchfuehren der entsprechenden Berechnung
 			switch(arithmeticOperations[i-1])
 			{
 				case '*':

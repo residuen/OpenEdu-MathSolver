@@ -61,7 +61,7 @@ public class MathExpressionValidator {
 	public static void main(String[] args) {
 
 		// Testvariablen anlegen
-		String expression1 = "-1+20-300+4000*2/4-10*2.5*2.5-2*3";
+//		String expression1 = "-1+20-300+4000*2/4-10*2.5*2.5-2*3";
 		String expression2 = "-1++20-300+  4000*2// 4-10*2.5*2.5+-2/*3";
 		
 		// Ergebnisvariable

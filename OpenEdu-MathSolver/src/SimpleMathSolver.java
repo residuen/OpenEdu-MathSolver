@@ -49,7 +49,7 @@ public class SimpleMathSolver {
 		char buf;						// Zwischenspeicher fuer ein beliebiges Zeichen
 		
 		int countOperators = 0;	// Zaehlvariable fuer Rechenoperationszeichen
-		int start = 0;	// Startposition einer Zahl
+		int start = 0;			// Startposition einer Zahl
 				
 		// Zaehlen der Rechenoperationen
 		for(int i=1; i<expressionAsChars.length; i++)
@@ -87,14 +87,6 @@ public class SimpleMathSolver {
 		
 		// Letzte Zahl herausloesen
 		numbers[numbers.length-1] =  Double.parseDouble(expression.substring(start+1, expressionAsChars.length));
-		
-//		// Ausgabe Zahlen
-//		for(int i=0; i<numbers.length; i++)
-//			System.out.println(numbers[i]);
-//		
-//		// Ausgabe Rechenoperationszeichen
-//		for(int i=0; i<arithmeticOperations.length; i++)
-//			System.out.println(arithmeticOperations[i]);
 	}
 	
 	/**
@@ -156,15 +148,5 @@ public class SimpleMathSolver {
 		double ergebnis = p.eval(expression);
 		
 		System.out.println(expression+"="+ergebnis);	// 1860,5
-		
-//		String expression;
-//		double ergebnis;
-//		
-//		for(int i=1; i<=10000; i++)
-//		{
-//			expression = i+"-"+((i+1)*10)+"+"+((i+2)*100)+"*"+((i+3)*1000)+"/"+i*i;
-//			ergebnis = p.eval(expression);
-//			System.out.println(expression+"="+ergebnis);
-//		}
 	}
 }
