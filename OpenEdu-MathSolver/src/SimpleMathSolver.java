@@ -101,7 +101,7 @@ public class SimpleMathSolver {
 	 * @param expression
 	 * @return
 	 */
-	private double eval(String expression)
+	public double eval(String expression)
 	{
 		double erg, b;	// Speichervariablen
 		

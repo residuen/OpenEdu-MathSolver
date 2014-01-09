@@ -1,9 +1,10 @@
 /*
 SecondExtendedMathSolver.java:
 Parser und Solver, zur Berechnung einfacher mathematischer Ausdruecke,
-mit Beruecksichtung von Punkt-vor-Strichrechnung
+mit Beruecksichtung von Punkt-vor-Strichrechnung, sowie von mathematischen Funktionen
+wie z.B.: sin, cos, tan, asin, acos, atan, exp, log, ln, x^y
 
-Copyright (C) 2013 Karsten Blauel
+Copyright (C) 2014 Karsten Blauel
 
 Dieses Programm ist freie Software. Sie koennen es unter den Bedingungen der GNU General Public License,
 wie von der Free Software Foundation veroeffentlicht, weitergeben und/oder modifizieren, entweder gemaess
@@ -23,9 +24,9 @@ Falls nicht, siehe <http://www.gnu.org/licenses/>.
 
 public class SecondExtendedMathSolver {
 	
-	private static boolean SHOW_OUTPUT = true;	// Sysout zeigen oder nicht
+	private final static boolean SHOW_OUTPUT = false;	// Sysout zeigen oder nicht
 	
-	// Konstantensammlung, in Reihenfolge der math. Funktionen zugeordnet (siehe Array functionNames)
+	// Konstantensammlung, in Reihenfolge der math. Funktionen zugeordnet (siehe Array functionNames in Zeile 43)
 	private final static int SIN  = 0;
 	private final static int COS  = 1;
 	private final static int TAN  = 2;
@@ -53,6 +54,8 @@ public class SecondExtendedMathSolver {
 	 * Konvertieren der Zahlen und speichern in double-Array, wenn Strichrechnung.
 	 * Zusaetzliches Trennen in Operationszeichen und Operanden bei Punktrechnung mit
 	 * anschliessender Berechnung (Funktion innerParser()).
+	 * Zusaetzlich untersuchen nach math. Funktionen (sin, cos, sqrt, etc ...) und berechnen
+	 * dieser Teilausdruecke, sowie zurueckschreiben in Zeichenkette (!!BAD!!)
 	 * Aufaddieren der Teillösungen.
 	 * 
 	 * @param expression
@@ -69,7 +72,10 @@ public class SecondExtendedMathSolver {
 		for(int i=1; i<expressionAsChars.length; i++)
 		{
 			buf = expressionAsChars[i];	// Zeichen zwischenspeichern
-			if(buf == '+' || buf == '-' || buf == '*' || buf == '/') // wenn ein Zeichen Operator ist, dann Zaehler erhoehen
+			
+			// wenn ein Zeichen + - * / Operator ist, dann Zaehler erhoehen
+			// bei - wird zusaetzlich auf Exponentenschreibweise mit E ueberprueft
+			if(buf == '+' || buf == '*' || buf == '/' || (buf == '-' && !(expressionAsChars[i-1]=='E')))
 				countOperators++;
 		}
 		
@@ -81,9 +87,9 @@ public class SecondExtendedMathSolver {
 		int n=0;
 		for(int i=1; i<expressionAsChars.length; i++)
 		{
-			// Suche + & - Rechenoperationszeichen
+			// Suche + und - Rechenoperationszeichen
 			buf = expressionAsChars[i];
-			if(buf == '+' || buf == '-')
+			if(buf == '+' || (buf == '-' && !(expressionAsChars[i-1]=='E')))
 			{
 				// Therme herausloesen und in String-Array ablegen
 				splitExpression[n] = expression.substring(start, i);
@@ -109,8 +115,8 @@ public class SecondExtendedMathSolver {
 	 */
 	private void containsMathFunction()
 	{
-		for(int i=0; i<splitExpression.length; i++)	// Teilausdruecke durchlaufen
-			if(splitExpression[i] !=null) // !!! Nullabfrage fixen, warscheinlich splitExpression zu gross !!!
+		for(int i=0; i<splitExpression.length; i++)			// Teilausdruecke durchlaufen
+			if(splitExpression[i] !=null) 					// !!! Nullabfrage fixen, warscheinlich splitExpression zu gross !!!
 				for(int j=0; j<functionNames.length; j++)	// Suchbegriffe durchlaufen
 				{	
 					// Teilausdruck nach math. Funktion durchsuchen, wenn gefunden ...
@@ -142,7 +148,7 @@ public class SecondExtendedMathSolver {
 		{
 			splitExpr = splitExpression[i].split("\\^");	// Zerlegen in Basis und Exponent
 			
-			// Basis und Exponent in Doble konvertieren
+			// Basis und Exponent in Double konvertieren
 			base = Double.parseDouble(splitExpr[0]);
 			exponent = Double.parseDouble(splitExpr[1]);
 			
@@ -226,7 +232,7 @@ public class SecondExtendedMathSolver {
 	 * @param expression
 	 * @return
 	 */
-	private double eval(String expression)
+	public double eval(String expression)
 	{
 		double erg = 0;	// Speichervariablen
 		
@@ -348,7 +354,7 @@ public class SecondExtendedMathSolver {
 		SecondExtendedMathSolver p = new SecondExtendedMathSolver();
 		double ergebnis;
 		
-		String expression = "-1+20-300+sin(1.57)+4000*2/4+cos(3.14)-10*2.5*2.5-2*3+2^3";
+		String expression = "-1+20-300+sin(1.57)+4000*2/4+cos(3.14)-10*2.5*2.5-2*3+2^3-1.23E-2";
 		System.out.println("Berechne: "+expression);
 		
 		if(SHOW_OUTPUT)
@@ -360,6 +366,6 @@ public class SecondExtendedMathSolver {
 			System.out.println("Auswerten");
 		
 		System.out.println("Ergebnis: "+expression+"="+ergebnis+
-		" (Kontrolle: "+(-1+20-300+Math.sin(1.57)+4000*2/4+Math.cos(3.14)-10*2.5*2.5-2*3+Math.pow(2,3))+")");	// 1650.5
+		" (Kontrolle: "+(-1+20-300+Math.sin(1.57)+4000*2/4+Math.cos(3.14)-10*2.5*2.5-2*3+Math.pow(2,3)-1.23E-2)+")");	// 1650.5
 	}
 }

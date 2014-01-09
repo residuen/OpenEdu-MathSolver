@@ -88,7 +88,7 @@ public class ExtendedMathSolver {
 	 * @param expression
 	 * @return
 	 */
-	private double eval(String expression)
+	public double eval(String expression)
 	{
 		double erg = 0;	// Speichervariablen
 		
