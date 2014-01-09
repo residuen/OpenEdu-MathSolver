@@ -19,19 +19,22 @@ public class SecondExtendedMathSolver {
 	
 	private static boolean SHOW_OUTPUT = true;
 	
-	private final static int SIN = 0;
-	private final static int COS = 1;
-	private final static int TAN = 2;
+	private final static int SIN  = 0;
+	private final static int COS  = 1;
+	private final static int TAN  = 2;
 	private final static int ASIN = 3;
 	private final static int ACOS = 4;
 	private final static int ATAN = 5;
 	private final static int SQRT = 6;
+	private final static int EXP  = 7;
+	private final static int LOG  = 8;
+	private final static int LN   = 9;
+	private final static int POW  = 10;
 	
-	private String[] functionNames = new String[] { "sin(", "cos(", "tan(", "asin(", "acos(", "atan(", "sqrt(" };
-//	private boolean mathFunctions = false;
+	private String[] functionNames = new String[] { "sin(", "cos(", "tan(", "asin(", "acos(", "atan(",
+													"sqrt(", "exp(", "log(", "ln(", "^" };
 	private double[] numbers;				// double-Array zum Speichern der Zahlen 
 	private String[] splitExpression;		// Teilausdruecke
-//	private int[] splitExpressionTyp;	// Teilausdruecke
 	
 	/**
 	 * parse:
@@ -65,7 +68,6 @@ public class SecondExtendedMathSolver {
 		// Arrays fuer Zahlen, Operatoren und Operatoren initialisieren
 		numbers = new double[countOperators+1];
 		splitExpression = new String[countOperators+1];
-//		splitExpressionTyp = new int[countOperators+1];
 		
 		// Trennen von Zahlen und Rechenoperationszeichen
 		int n=0;
@@ -102,7 +104,6 @@ public class SecondExtendedMathSolver {
 			if(splitExpression[i] !=null) // !!! Nullabfrage fixen, warscheinlich splitExpression zu gross !!!
 				for(int j=0; j<functionNames.length; j++)
 				{	
-//					System.out.println(splitExpression[i]+" "+functionNames[j]);
 					if(splitExpression[i].contains(functionNames[j]))
 					{
 						solveMathFunctions(i, j);
@@ -122,8 +123,6 @@ public class SecondExtendedMathSolver {
 		
 		expr = splitExpression[i].substring(a, b);
 		value = Double.parseDouble(expr);
-		
-//		System.out.println("splitExpression[i].substring(0)="+splitExpression[i].substring(0,1));
 		
 		if(splitExpression[i].substring(0, 1).equals("-"))
 			prefix = "-";
@@ -158,20 +157,24 @@ public class SecondExtendedMathSolver {
 				erg = Math.sqrt(value);
 				break;
 				
+			case EXP:
+				erg = Math.exp(value);
+				break;
+				
+			case LOG:
+				erg = Math.log10(value);
+				break;
+				
+			case LN:
+				erg = Math.log(value);
+				break;
+				
 		}
 		
 		if(erg<0)
 			splitExpression[i] = "" + erg;
 		else
 			splitExpression[i] = prefix + erg;
-		
-//		System.out.println("(="+a);
-//		System.out.println(")="+b);
-//		System.out.println("(...)="+value);
-//		System.out.println("splitExpression[i]="+splitExpression[i]);
-		
-
-		
 	}
 	
 	/**
@@ -309,7 +312,6 @@ public class SecondExtendedMathSolver {
 		double ergebnis;
 		
 		String expression = "-1+20-300+sin(1.57)+4000*2/4+cos(3.14)-10*2.5*2.5-2*3";
-//		String expression = "-1+20-300+4000*2/4-10*2.5*2.5-2*3";
 		System.out.println("Berechne: "+expression);
 		
 		if(SHOW_OUTPUT)
