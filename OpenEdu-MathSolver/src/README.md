@@ -3,7 +3,7 @@ OpenEdu-MathSolver
 
 Einfache mathematische Solver
 
-1. SimpleMathSolver.java
+1. SimpleMathSolver.java<br />
 Eine einfache Java-Klasse zum berechnen mathematischer Ausdruecke. Punkt-vor-Strich-Rechnung wird nicht beruecksichtigt
 
 2. ExtendedMathSolver.java

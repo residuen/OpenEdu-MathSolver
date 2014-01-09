@@ -3,7 +3,7 @@ OpenEdu-MathSolver
 
 Einfache mathematische Solver
 
-1. SimpleMathSolver.java
+1. SimpleMathSolver.java<br />
 Eine einfache Java-Klasse zum berechnen mathematischer Ausdruecke. Punkt-vor-Strich-Rechnung wird nicht beruecksichtigt
 
 2. ExtendedMathSolver.java
@@ -15,5 +15,5 @@ sin, cos, tan, asin, acos, atan, exp, log, ln
 
 4. MathExpressionValidator.java
 Eine Solver-Klasse welche eine rudimentaere Pruefung des mathematischen Ausdrucks vornimmt. Leerzeichen werden geloescht,
-Kommata werden durch Punkte ersetzt. Zusaetzlich die Dopplung von Rechenoperatoren Ã¼berprueft. Als Ueberpruefungsergebnis
+Kommata werden durch Punkte ersetzt. Zusaetzlich die Dopplung von Rechenoperatoren Überprueft. Als Ueberpruefungsergebnis
 wird TRUE oder FALSE zurueckgeleifert.

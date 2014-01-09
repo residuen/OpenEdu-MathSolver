@@ -15,10 +15,17 @@ Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Prog
 Falls nicht, siehe <http://www.gnu.org/licenses/>.
 */
 
+/*
+ * Performance-ToDos:
+ * - Berechnete mathem. Funktionen als Double ablegen und nicht wieder in String umwandeln
+ * - String-Array mit Teilausdruecken auf Laenge pruefen
+ */
+
 public class SecondExtendedMathSolver {
 	
-	private static boolean SHOW_OUTPUT = true;
+	private static boolean SHOW_OUTPUT = true;	// Sysout zeigen oder nicht
 	
+	// Konstantensammlung, in Reihenfolge der math. Funktionen zugeordnet (siehe Array functionNames)
 	private final static int SIN  = 0;
 	private final static int COS  = 1;
 	private final static int TAN  = 2;
@@ -31,6 +38,7 @@ public class SecondExtendedMathSolver {
 	private final static int LN   = 9;
 	private final static int POW  = 10;
 	
+	// String-Array mit Namen mathematischer Funktionen 
 	private String[] functionNames = new String[] { "sin(", "cos(", "tan(", "asin(", "acos(", "atan(",
 													"sqrt(", "exp(", "log(", "ln(", "^" };
 	private double[] numbers;				// double-Array zum Speichern der Zahlen 
@@ -89,92 +97,106 @@ public class SecondExtendedMathSolver {
 		// Letzte Zahl herausloesen
 		splitExpression[n] = expression.substring(start, expressionAsChars.length);
 	
-		 containsMathFunction();
+		// Auf math. Funktionen ueberpruefen
+		containsMathFunction();
 	}
 	
 	/**
 	 * Testet, ob mathem. Funktionen in den Ausdruecken
-	 * verwendet werden (sin, cos, etc...) und initialisiert
-	 * ein Bool-Array welches Auskunft ueber den Index der
-	 * Teilausdruecke mit math. Funktionen gibt.
+	 * verwendet werden (sin, cos, etc...).
+	 * Ist dies der Fall, wird dieser berechnet und
+	 * das Ergebnis als Zeichenkette in den Ausdruck geschrieben (!! TODO)
 	 */
 	private void containsMathFunction()
 	{
-		for(int i=0; i<splitExpression.length; i++)
+		for(int i=0; i<splitExpression.length; i++)	// Teilausdruecke durchlaufen
 			if(splitExpression[i] !=null) // !!! Nullabfrage fixen, warscheinlich splitExpression zu gross !!!
-				for(int j=0; j<functionNames.length; j++)
+				for(int j=0; j<functionNames.length; j++)	// Suchbegriffe durchlaufen
 				{	
+					// Teilausdruck nach math. Funktion durchsuchen, wenn gefunden ...
 					if(splitExpression[i].contains(functionNames[j]))
 					{
-						solveMathFunctions(i, j);
+						solveMathFunctions(i, j);	// ... dann Funktionswert berechnen
+
+						break;
 					}
 				}
 	}
 	
+	/**
+	 * Funktionsparameter ermitteln und als Zeichenkette extrahieren.
+	 * Den Funktiosnwert berechnen und mit Prefix in Teilausdruck
+	 * als String (!!BAD!!) zurueckkopieren
+	 * 
+	 * @param i
+	 * @param j
+	 */
 	private void solveMathFunctions(int i, int j)
 	{
-		int a, b;
+		int a, b;	// Variablen fuer Position der Funktionsparameter in Zeichenkette
 		double value, erg = 0;
 		String expr;
-		String prefix = "+";
 		
+		// Ermitteln der Position der Funktionsparameter in Zeichenkette
 		a = splitExpression[i].indexOf("(") + 1;
 		b = splitExpression[i].indexOf(")");
 		
+		// Funktionsparameter aus String extrahieren
 		expr = splitExpression[i].substring(a, b);
+		
+		// Funktionsparameter in double umwandeln
 		value = Double.parseDouble(expr);
 		
-		if(splitExpression[i].substring(0, 1).equals("-"))
-			prefix = "-";
-		
+		// Berechnen des Funktiosnwertes
 		switch(j)
 		{
 			case SIN:
-				erg = Math.sin(value);
+				erg = Math.sin(value);	// Sinus
 				break;
 				
 			case COS:
-				erg = Math.cos(value);
+				erg = Math.cos(value);	// Kosinus
 				break;
 				
 			case TAN:
-				erg = Math.tan(value);
+				erg = Math.tan(value);	// Tangens
 				break;
 				
 			case ASIN:
-				erg = Math.asin(value);
+				erg = Math.asin(value);	// A-Sinus
 				break;
 				
 			case ACOS:
-				erg = Math.acos(value);
+				erg = Math.acos(value);	// A-Kosinus
 				break;
 				
 			case ATAN:
-				erg = Math.atan(value);
+				erg = Math.atan(value);	// A-Tangens
 				break;
 				
 			case SQRT:
-				erg = Math.sqrt(value);
+				erg = Math.sqrt(value);	// Quadratwurzel
 				break;
 				
-			case EXP:
+			case EXP:					// E-Funktion
 				erg = Math.exp(value);
 				break;
 				
 			case LOG:
-				erg = Math.log10(value);
+				erg = Math.log10(value);	// Logarithmus zur Basis 10
 				break;
 				
 			case LN:
-				erg = Math.log(value);
+				erg = Math.log(value);		// Natuerlicher Logarithmus
 				break;
 				
 		}
 		
+		// Ergebnis-String mit Prefix aus Ergebnis erzeugen
 		if(erg<0)
 			splitExpression[i] = "" + erg;
 		else
-			splitExpression[i] = prefix + erg;
+			splitExpression[i] = "+" + erg;
 	}
 	
 	/**
@@ -202,7 +224,7 @@ public class SecondExtendedMathSolver {
 		{
 			buffer = splitExpression[i];
 			
-			if(buffer==null)
+			if(buffer==null)	// (!! Arraylaenge ueberpruefen !!)
 				break;
 			
 			if(SHOW_OUTPUT)
@@ -211,7 +233,7 @@ public class SecondExtendedMathSolver {
 			// Wenn Teilausdruck Punktrechnung enthaelt ...
 			if(buffer.contains("*") || buffer.contains("/"))
 			{
-				erg = erg + innerParser(buffer);	// ... dann rufe inenren parser auf ...
+				erg = erg + innerParser(buffer);	// ... dann rufe inneren Parser auf ...
 			}
 			else
 				erg = erg + Double.parseDouble(buffer);	// ... ansonsten Teilausdruck aufaddieren 
