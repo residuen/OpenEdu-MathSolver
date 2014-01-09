@@ -116,6 +116,7 @@ public class SecondExtendedMathSolver {
 					// Teilausdruck nach math. Funktion durchsuchen, wenn gefunden ...
 					if(splitExpression[i].contains(functionNames[j]))
 					{
+//						System.out.println("splitExpression[i]="+splitExpression[i]);
 						solveMathFunctions(i, j);	// ... dann Funktionswert berechnen
 
 						break;
@@ -134,62 +135,75 @@ public class SecondExtendedMathSolver {
 	private void solveMathFunctions(int i, int j)
 	{
 		int a, b;	// Variablen fuer Position der Funktionsparameter in Zeichenkette
-		double value, erg = 0;
-		String expr;
+		double value, base, exponent, erg = 0;
+		String expr, splitExpr[];
 		
-		// Ermitteln der Position der Funktionsparameter in Zeichenkette
-		a = splitExpression[i].indexOf("(") + 1;
-		b = splitExpression[i].indexOf(")");
-		
-		// Funktionsparameter aus String extrahieren
-		expr = splitExpression[i].substring(a, b);
-		
-		// Funktionsparameter in double umwandeln
-		value = Double.parseDouble(expr);
-		
-		// Berechnen des Funktiosnwertes
-		switch(j)
+		if(j==POW)	// ueberpruefen auf die Funktion x^y
 		{
-			case SIN:
-				erg = Math.sin(value);	// Sinus
-				break;
-				
-			case COS:
-				erg = Math.cos(value);	// Kosinus
-				break;
-				
-			case TAN:
-				erg = Math.tan(value);	// Tangens
-				break;
-				
-			case ASIN:
-				erg = Math.asin(value);	// A-Sinus
-				break;
-				
-			case ACOS:
-				erg = Math.acos(value);	// A-Kosinus
-				break;
-				
-			case ATAN:
-				erg = Math.atan(value);	// A-Tangens
-				break;
-				
-			case SQRT:
-				erg = Math.sqrt(value);	// Quadratwurzel
-				break;
-				
-			case EXP:					// E-Funktion
-				erg = Math.exp(value);
-				break;
-				
-			case LOG:
-				erg = Math.log10(value);	// Logarithmus zur Basis 10
-				break;
-				
-			case LN:
-				erg = Math.log(value);		// Natuerlicher Logarithmus
-				break;
-				
+			splitExpr = splitExpression[i].split("\\^");	// Zerlegen in Basis und Exponent
+			
+			// Basis und Exponent in Doble konvertieren
+			base = Double.parseDouble(splitExpr[0]);
+			exponent = Double.parseDouble(splitExpr[1]);
+			
+			// Berechnen des Ergebnisses aus x^y
+			erg = Math.pow(base, exponent);
+		}
+		else		// Ansonsten auf andere Funktionen ueberpruefen
+		{
+			// Ermitteln der Position der Funktionsparameter in Zeichenkette
+			a = splitExpression[i].indexOf("(") + 1;
+			b = splitExpression[i].indexOf(")");
+			
+			// Funktionsparameter aus String extrahieren
+			expr = splitExpression[i].substring(a, b);
+			
+			// Funktionsparameter in double umwandeln
+			value = Double.parseDouble(expr);
+			
+			// Berechnen des Funktiosnwertes
+			switch(j)
+			{
+				case SIN:
+					erg = Math.sin(value);	// Sinus
+					break;
+					
+				case COS:
+					erg = Math.cos(value);	// Kosinus
+					break;
+					
+				case TAN:
+					erg = Math.tan(value);	// Tangens
+					break;
+					
+				case ASIN:
+					erg = Math.asin(value);	// A-Sinus
+					break;
+					
+				case ACOS:
+					erg = Math.acos(value);	// A-Kosinus
+					break;
+					
+				case ATAN:
+					erg = Math.atan(value);	// A-Tangens
+					break;
+					
+				case SQRT:
+					erg = Math.sqrt(value);	// Quadratwurzel
+					break;
+					
+				case EXP:					// E-Funktion
+					erg = Math.exp(value);
+					break;
+					
+				case LOG:
+					erg = Math.log10(value);	// Logarithmus zur Basis 10
+					break;
+					
+				case LN:
+					erg = Math.log(value);		// Natuerlicher Logarithmus
+					break;
+			}
 		}
 		
 		// Ergebnis-String mit Prefix aus Ergebnis erzeugen
@@ -197,6 +211,7 @@ public class SecondExtendedMathSolver {
 			splitExpression[i] = "" + erg;
 		else
 			splitExpression[i] = "+" + erg;
+
 	}
 	
 	/**
@@ -333,7 +348,7 @@ public class SecondExtendedMathSolver {
 		SecondExtendedMathSolver p = new SecondExtendedMathSolver();
 		double ergebnis;
 		
-		String expression = "-1+20-300+sin(1.57)+4000*2/4+cos(3.14)-10*2.5*2.5-2*3";
+		String expression = "-1+20-300+sin(1.57)+4000*2/4+cos(3.14)-10*2.5*2.5-2*3+2^3";
 		System.out.println("Berechne: "+expression);
 		
 		if(SHOW_OUTPUT)
@@ -345,6 +360,6 @@ public class SecondExtendedMathSolver {
 			System.out.println("Auswerten");
 		
 		System.out.println("Ergebnis: "+expression+"="+ergebnis+
-		" (Kontrolle: "+(-1+20-300+Math.sin(1.57)+4000*2/4+Math.cos(3.14)-10*2.5*2.5-2*3)+")");	// 1650.5
+		" (Kontrolle: "+(-1+20-300+Math.sin(1.57)+4000*2/4+Math.cos(3.14)-10*2.5*2.5-2*3+Math.pow(2,3))+")");	// 1650.5
 	}
 }

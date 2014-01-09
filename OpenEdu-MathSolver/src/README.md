@@ -11,7 +11,7 @@ Eine weitere Java-Klasse zum berechnen mathematischer Ausdruecke. hier wird die 
 
 3. SecondExtendedMathSolver.java
 Wie 2. Hier werden zusätzlich noch folgende mathematische Funktionen berücksichtigt:
-sin, cos, tan, asin, acos, atan, exp, log, ln
+sin, cos, tan, asin, acos, atan, exp, log, ln, x^y
 
 4. MathExpressionValidator.java
 Eine Solver-Klasse welche eine rudimentaere Pruefung des mathematischen Ausdrucks vornimmt. Leerzeichen werden geloescht,
