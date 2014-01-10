@@ -17,6 +17,7 @@ Falls nicht, siehe <http://www.gnu.org/licenses/>.
 
 public class MathExpressionValidator {
 	
+	private String expression = null;
 	/**
 	 * validate:
 	 * Loeschen von Leerzeichen
@@ -33,10 +34,18 @@ public class MathExpressionValidator {
 
 		expression = expression.replace(" ", "");	// Alle Leerzeichen entfernen
 		expression = expression.replace(",", ".");	// Kommata durch Punkt ersetzen
-	
+		expression = expression.replace("+-", "-");	// +- durch - ersetzen
+		
 		expressionAsChars = expression.toCharArray();	// Zeichenkette als char-Array speichern
 		
+		this.expression = expression;
+		
 		return validationTest(expressionAsChars);	// Validation ausfuehren und Ergebnis ausgeben
+	}
+	
+	public String getExpression()
+	{
+		return expression;
 	}
 	
 	private boolean validationTest(char[] expressionAsChars)
@@ -61,7 +70,7 @@ public class MathExpressionValidator {
 	public static void main(String[] args) {
 
 		// Testvariablen anlegen
-//		String expression1 = "-1+20-300+4000*2/4-10*2.5*2.5-2*3";
+		String expression1 = "-1+20-300+-4000*2/4-10*2.5*2.5-2*3";
 		String expression2 = "-1++20-300+  4000*2// 4-10*2.5*2.5+-2/*3";
 		
 		// Ergebnisvariable
@@ -71,10 +80,11 @@ public class MathExpressionValidator {
 		MathExpressionValidator val = new MathExpressionValidator();
 		
 		// Ueberpruefung durchfuehren
-		erg = val.validate(expression2);
+		erg = val.validate(expression1);
 		
 		// Ueberpruefungsergebnis ausgeben
-		System.out.print("Gueltigkeit pruefen von: "+expression2+" -> "+erg);
+		System.out.println("Gueltigkeit pruefen von: "+expression1+" -> "+erg);
+		System.out.println("Gueltigkeit pruefen von: "+val.getExpression()+" -> "+erg);
 
 	}
 
